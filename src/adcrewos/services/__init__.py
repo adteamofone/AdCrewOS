@@ -1,0 +1,1 @@
+"""Service layer for AdCrewOS — external integrations and orchestration."""
