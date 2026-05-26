@@ -1,6 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+venv/
+.venv/
+
+# Project secrets
+.adcrewos/credentials.json
+.adcrewos/alerts.json
+.adcrewos/reports/
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
 .env
 .env.local
-.env.*.local
 node_modules/
 dist/
 build/
