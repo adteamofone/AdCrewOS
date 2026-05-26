@@ -1,0 +1,275 @@
+  1GgAdCrewOS Production Implementation Plan
+Project Overview
+AdCrewOS is a SaaS platform for small business owners, freelancers, small agencies, and solopreneurs to autonomously manage ad accounts across Google Ads and Meta (Facebook) Ads through a unified dashboard with alerts, reporting, and automated spend management.
+
+Key Requirements
+Pricing Tiers:
+Solo: $49/month + 2% of ad spend
+Agency: $199/month + 1% of ad spend
+Free Trial: 7 days
+Payment: Stripe/PayPal integration
+Core Features:
+Unified dashboard
+Real-time SMS/Email alerts
+Downloadable scheduled reports
+3-step easy onboarding
+Auto-pause/increase spend based on thresholds
+Domain: AdCrewOS.com
+Brand: Dark theme, cyan/turquoise accents
+Technology Stack (Selected for Production Quality)
+Frontend
+Framework: React 18+ with TypeScript
+Styling: Tailwind CSS + custom components
+State Management: Redux Toolkit or TanStack Query
+Real-time: Socket.io client
+UI Components: shadcn/ui (follows design system)
+Deployment: Vercel or AWS CloudFront
+Backend
+Runtime: Node.js (v18+)
+Framework: Express.js or Fastify
+Language: TypeScript
+Database: PostgreSQL 14+ with Prisma ORM
+Real-time: Socket.io
+Authentication: JWT + refresh tokens, OAuth 2.0
+API Documentation: OpenAPI/Swagger
+Deployment: Docker + AWS ECS, Railway, or Heroku
+Third-Party Integrations
+Ad Platform APIs: Google Ads API v13+, Meta Marketing API v16+
+Payments: Stripe (primary), PayPal fallback
+Alerts: Twilio (SMS), SendGrid (Email)
+Background Jobs: Bull/Node-Red or Celery
+Monitoring: Sentry, LogRocket, Datadog
+Database Schema
+Users & Authentication
+Ad Accounts (Google/Meta connections)
+Campaigns & performance metrics
+Alerts & thresholds
+Subscription & billing
+Reports & schedules
+Activity logs
+Project Structure
+adcrewos/
+├── apps/
+│   ├── web/                    # React frontend
+│   │   ├── src/
+│   │   │   ├── components/
+│   │   │   ├── pages/
+│   │   │   ├── hooks/
+│   │   │   ├── utils/
+│   │   │   └── styles/
+│   │   └── public/
+│   └── api/                    # Node.js backend
+│       ├── src/
+│       │   ├── controllers/
+│       │   ├── services/
+│       │   ├── models/
+│       │   ├── middleware/
+│       │   ├── routes/
+│       │   ├── config/
+│       │   └── utils/
+│       ├── prisma/
+│       │   └── schema.prisma
+│       └── tests/
+├── packages/
+│   ├── shared/               # Shared types, constants
+│   └── sdk/                  # AdCrewOS SDK for integrations
+├── docs/                     # Documentation
+├── docker-compose.yml
+└── README.md
+Implementation Phases
+Phase 1: Foundation & Setup (Weeks 1-2)
+[ ] Project scaffolding (Monorepo setup with Turborepo)
+[ ] Database schema design & Prisma migrations
+[ ] Authentication system (JWT, OAuth)
+[ ] User management & onboarding flow
+[ ] Stripe & PayPal payment integration
+[ ] Basic landing page & pricing page
+[ ] Environment & deployment configuration
+Phase 2: Core Dashboard (Weeks 3-4)
+[ ] Dashboard layout & components (following brand design)
+[ ] Ad account connection flow (Google Ads OAuth)
+[ ] Ad account connection flow (Meta OAuth)
+[ ] Campaign list & status display
+[ ] Real-time metrics display (spend, ROAS, CPA)
+[ ] Basic filtering & sorting
+Phase 3: Analytics & Reporting (Weeks 5-6)
+[ ] Performance charts (Recharts/Chart.js)
+[ ] Campaign analytics detail pages
+[ ] Report generation (PDF, CSV, JSON)
+[ ] Scheduled report automation
+[ ] Report delivery via email
+[ ] Dashboard data refresh & caching
+Phase 4: Alerts & Automation (Weeks 7-8)
+[ ] Threshold configuration UI
+[ ] Alert rules engine
+[ ] SMS alerts (Twilio integration)
+[ ] Email alerts (SendGrid integration)
+[ ] Auto-pause campaign logic
+[ ] Auto-increase spend logic
+[ ] Alert history & management
+Phase 5: 3-Step Onboarding (Weeks 9)
+[ ] Onboarding flow design
+[ ] Step 1: Connect ad accounts (Google & Meta)
+[ ] Step 2: Set performance goals
+[ ] Step 3: Configure spend thresholds
+[ ] Onboarding completion & dashboard redirect
+[ ] Onboarding skip & retry logic
+Phase 6: Team & Collaboration (Week 10)
+[ ] Team member management (for Agency tier)
+[ ] Role-based access control (RBAC)
+[ ] Activity logging & audit trail
+[ ] Team invitations
+Phase 7: Polish & Testing (Week 11)
+[ ] E2E testing (Cypress/Playwright)
+[ ] Performance optimization
+[ ] Security audit
+[ ] Mobile responsiveness
+[ ] Accessibility (WCAG 2.1)
+[ ] Error handling & edge cases
+Phase 8: Deployment & Launch (Week 12)
+[ ] Production deployment
+[ ] CDN & caching setup
+[ ] Monitoring & logging
+[ ] Staging environment
+[ ] Documentation
+[ ] Launch preparation
+API Endpoints (High-Level)
+Authentication
+POST /auth/register - User registration
+POST /auth/login - User login
+POST /auth/refresh - Refresh JWT
+POST /auth/logout - Logout
+POST /auth/oauth/google - OAuth callback
+POST /auth/oauth/meta - OAuth callback
+Ad Accounts
+GET /ad-accounts - List connected accounts
+POST /ad-accounts - Connect new account
+DELETE /ad-accounts/:id - Disconnect account
+GET /ad-accounts/:id/campaigns - Get campaigns for account
+GET /ad-accounts/:id/metrics - Get account metrics
+Campaigns
+GET /campaigns - List campaigns
+GET /campaigns/:id - Campaign details
+PATCH /campaigns/:id - Update campaign settings
+GET /campaigns/:id/performance - Performance data
+Alerts
+GET /alerts/config - Get alert configuration
+POST /alerts/config - Create/update alert rules
+GET /alerts/history - Alert history
+PATCH /alerts/:id/status - Mark alert as read
+Reports
+GET /reports - List scheduled reports
+POST /reports - Create scheduled report
+DELETE /reports/:id - Delete report schedule
+GET /reports/:id/download - Download report
+Billing
+GET /billing/subscription - Current subscription
+POST /billing/upgrade - Change tier
+GET /billing/invoices - Invoice history
+POST /billing/payment-method - Update payment method
+Team (Agency tier)
+GET /team/members - List team members
+POST /team/invite - Invite team member
+DELETE /team/members/:id - Remove member
+Key Features Breakdown
+1. Unified Dashboard
+Real-time metrics cards (Total Spend, ROAS, Active Campaigns, Alerts)
+Performance trends chart (multi-account aggregation)
+Campaign status table with quick filters
+Account switcher
+2. Ad Account Connection
+OAuth 2.0 flow for Google Ads & Meta
+Account verification & permission scopes
+Multi-account support
+Account naming & organization
+3. 3-Step Onboarding
+Step 1: Connect Google & Meta accounts via OAuth
+Step 2: Set performance goals (CPA target, ROAS target, daily budget)
+Step 3: Configure spend thresholds (pause if CPA > X, increase if ROAS > X)
+4. Alerts & Automation
+Real-time monitoring of campaign metrics
+Configurable thresholds per campaign
+SMS alerts via Twilio
+Email digest via SendGrid
+Auto-pause campaigns
+Auto-increase ad spend
+5. Reporting
+Customizable report templates
+Scheduled delivery (daily, weekly, monthly)
+Multiple export formats (PDF, CSV, JSON)
+Email delivery
+Report history & archive
+6. Billing & Subscription
+Stripe payment processing
+Subscription tier management
+Usage tracking (ad spend %)
+Invoice generation
+Free trial management (7-day)
+Dunning & retry logic
+Database Models (Prisma)
+// User & Auth
+- User (email, password, tier, trialEndsAt, subscription)
+- OAuthToken (userId, provider, accessToken, refreshToken, expiresAt)
+- Session (userId, token, expiresAt)
+
+// Billing
+- Subscription (userId, tier, status, currentPeriodStart, currentPeriodEnd)
+- Invoice (userId, amount, status, paidAt)
+- AdSpendTracker (userId, month, totalSpend, percentCharged)
+
+// Ad Accounts
+- AdAccount (userId, provider, externalId, name, status, currency)
+- AccountPermissions (userId, adAccountId, role)
+
+// Campaigns
+- Campaign (adAccountId, externalId, name, status, budget, performance)
+- CampaignMetric (campaignId, date, spend, impressions, clicks, conversions, revenue)
+
+// Alerts
+- AlertRule (userId, type, metric, threshold, action, enabled)
+- Alert (userId, type, message, status, createdAt)
+- AlertNotification (alertId, channel, status, sentAt)
+
+// Reports
+- Report (userId, name, metrics, schedule, format)
+- ReportGeneration (reportId, generatedAt, fileUrl)
+
+// Team
+- TeamMember (organizationId, userId, email, role)
+Security Considerations
+JWT with short expiration + refresh tokens
+OAuth 2.0 for ad platform integrations
+HTTPS/TLS encryption
+Environment variables for secrets
+Rate limiting on API endpoints
+SQL injection prevention (Prisma)
+XSS protection (React built-in)
+CSRF tokens for state-changing operations
+Regular security audits
+Data encryption at rest (database passwords)
+Deployment Strategy
+Frontend: Vercel (auto-deploy on git push)
+Backend: AWS ECS with Docker or Railway
+Database: AWS RDS PostgreSQL
+Storage: AWS S3 for reports
+CDN: CloudFront or Vercel Edge
+Monitoring: Sentry for errors, Datadog for infrastructure
+CI/CD: GitHub Actions
+Success Metrics
+User onboarding completion rate (target: 85%)
+Dashboard load time (target: <2s)
+Alert delivery success rate (target: 99.9%)
+Payment processing success (target: >95%)
+System uptime (target: 99.9%)
+User retention (target: 70% MoM)
+Next Steps
+Set up monorepo with Turborepo
+Configure PostgreSQL & Prisma
+Implement authentication system
+Build core dashboard layout
+Integrate Stripe payments
+Connect Google Ads API
+Connect Meta API
+Implement alert system
+Build onboarding flow
+Deploy to production
